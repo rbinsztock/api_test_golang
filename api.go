@@ -22,6 +22,8 @@ type Campaign struct {
 func GetUser(db *sql.DB, key string) (User, int) {
 	var user_id int
 	var api_token string
+	var name string
+	var account_id int
 	err := db.QueryRow("select id, api from users where token_api = ? limit 1", key).Scan(&user_id, &api_token)
 	if err == sql.ErrNoRows {
 		return User{}, 0
@@ -30,13 +32,14 @@ func GetUser(db *sql.DB, key string) (User, int) {
 		fmt.Println(err)
 		return User{}, -1
 	}
-	return User{user_id, api_token}, user_id
+	return User{user_id, name, api_token, account_id}, user_id
 }
 
 func GetCampaign(db *sql.DB, user_id int, campaign_id int) (Campaign, int) {
 	var (
 		id   int
 		name string
+		account_id int
 	)
 	err := db.QueryRow("select id, name from campaigns where id = ? and user_id = ? limit 1", campaign_id, user_id).Scan(&id, &name)
 	if err == sql.ErrNoRows {
@@ -46,7 +49,7 @@ func GetCampaign(db *sql.DB, user_id int, campaign_id int) (Campaign, int) {
 		fmt.Println(err)
 		return Campaign{}, -1
 	}
-	return Campaign{id, name}, id
+	return Campaign{id, name, account_id}, id
 }
 
 func GetCampaigns(db *sql.DB, UserId int) []Campaign {
@@ -58,6 +61,7 @@ func GetCampaigns(db *sql.DB, UserId int) []Campaign {
 	var (
 		id   int
 		name string
+		account_id int
 	)
 
 	p := make([]Campaign, 0)
@@ -67,7 +71,7 @@ func GetCampaigns(db *sql.DB, UserId int) []Campaign {
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			p = append(p, Campaign{id, name})
+			p = append(p, Campaign{id, name, account_id})
 		}
 	}
 	return p

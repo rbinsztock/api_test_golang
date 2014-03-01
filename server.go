@@ -25,7 +25,7 @@ func main() {
 
 	m.Use(func(res http.ResponseWriter, req *http.Request, r render.Render) {
 		api_token := ""
-		api_token = req.URL.Query().Get("key")
+		api_token = req.URL.Query().Get("token")
 		if api_token == "" {
 			r.JSON(404, map[string]interface{}{"status": "Fail", "error_message": "Need api token"})
 			return
@@ -41,7 +41,7 @@ func main() {
 		return "Hello world!"
 	})
 	m.Get("/campaigns", func(current_user User, r render.Render) {
-  		campaigns := GetCampaign(db, current_user.Id)
+  		campaigns := GetCampaigns(db, current_user.Id)
   		r.JSON(200, map[string]interface{}{"status": "Success", "data": campaigns})
 	})
 	m.Get("/campaigns/:id", func(current_user User, params martini.Params, r render.Render) {
