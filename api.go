@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	Id        int    `json:"id"`
-	Name      string `json:"name"`
+	Email     string `json:"email"`
 	Api       string `json:"api_token"`
 	AccountId int    `json:"account_id"`
 }
@@ -22,9 +22,9 @@ type Campaign struct {
 func GetUser(db *sql.DB, key string) (User, int) {
 	var user_id int
 	var api_token string
-	var name string
+	var email string
 	var account_id int
-	err := db.QueryRow("select id, api from users where token_api = ? limit 1", key).Scan(&user_id, &api_token)
+	err := db.QueryRow("select id, email from users where api_token = ? limit 1", key).Scan(&user_id, &api_token)
 	if err == sql.ErrNoRows {
 		return User{}, 0
 	}
@@ -32,7 +32,7 @@ func GetUser(db *sql.DB, key string) (User, int) {
 		fmt.Println(err)
 		return User{}, -1
 	}
-	return User{user_id, name, api_token, account_id}, user_id
+	return User{user_id, email, api_token, account_id}, user_id
 }
 
 func GetCampaign(db *sql.DB, user_id int, campaign_id int) (Campaign, int) {
