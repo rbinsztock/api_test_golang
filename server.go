@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"github.com/codegangsta/martini"
 	"github.com/codegangsta/martini-contrib/render"
-	_ "github.com/go-sql-driver/mysql"
+	//"github.com/martini-contrib/auth"
+	_"github.com/go-sql-driver/mysql"
 	"net/http"
 	"strconv"
 )
