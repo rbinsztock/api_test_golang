@@ -7,16 +7,16 @@ import (
 )
 
 type User struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-	Api string `json:"api_token"`
-	AccountId int `json:"account_id"`
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Api       string `json:"api_token"`
+	AccountId int    `json:"account_id"`
 }
 
 type Campaign struct {
-	Id  int    `json:"id"`
-	Name string `json:"name"`
-	AccountId int `json:"account_id"`
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	AccountId int    `json:"account_id"`
 }
 
 func GetUser(db *sql.DB, key string) (User, int) {
@@ -37,8 +37,8 @@ func GetUser(db *sql.DB, key string) (User, int) {
 
 func GetCampaign(db *sql.DB, user_id int, campaign_id int) (Campaign, int) {
 	var (
-		id   int
-		name string
+		id         int
+		name       string
 		account_id int
 	)
 	err := db.QueryRow("select id, name from campaigns where id = ? and user_id = ? limit 1", campaign_id, user_id).Scan(&id, &name)
@@ -59,8 +59,8 @@ func GetCampaigns(db *sql.DB, UserId int) []Campaign {
 	}
 
 	var (
-		id   int
-		name string
+		id         int
+		name       string
 		account_id int
 	)
 
